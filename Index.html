@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools Directory - Aixploria Clone</title>
+    
+    <!-- Bootstrap & Dependencies -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #6c5dd3;
+            --hover-color: #5b4dc2;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.95) !important;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1535378620166-273708d44e4c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Card Animations */
+        .tool-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 15px;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Voting Buttons */
+        .vote-btn {
+            background: #f4f4f4;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .vote-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Custom Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#"><b>AI</b>Explorer</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="#">Top Tools</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Categories</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">News</a></li>
+            </ul>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search AI tools...">
+            </form>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container text-white text-center fade-in">
+        <h1 class="display-4 mb-4">Discover the Best AI Tools</h1>
+        <div class="col-lg-6 mx-auto">
+            <input type="text" class="form-control form-control-lg" placeholder="Search 1500+ AI tools...">
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<main class="container my-5 pt-5">
+    <!-- Tools Grid -->
+    <section id="tools-grid" class="row g-4">
+        <!-- Cards will be populated via JavaScript -->
+    </section>
+</main>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // Initialize AOS
+    AOS.init();
+
+    // Sample Data (Replace with actual API data)
+    const tools = [
+        { 
+            name: "MidJourney V6", 
+            category: "Image Generation",
+            description: "Advanced AI image generation tool with enhanced realism",
+            votes: 245,
+            icon: "fa-palette"
+        },
+        { 
+            name: "GPT-4 Turbo", 
+            category: "Text Generation",
+            description: "Latest version of OpenAI's language model",
+            votes: 892,
+            icon: "fa-comment-dots"
+        },
+        // Add more tools...
+    ];
+
+    // Generate Tools Grid
+    const toolsGrid = document.getElementById('tools-grid');
+    
+    tools.forEach((tool, index) => {
+        const card = document.createElement('div');
+        card.className = 'col-md-4';
+        card.innerHTML = `
+            <div class="tool-card card h-100 p-4" data-aos="fade-up" data-aos-delay="${index * 50}">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas ${tool.icon} fa-2x text-primary me-3"></i>
+                    <h4 class="mb-0">${tool.name}</h4>
+                </div>
+                <p class="text-muted">${tool.description}</p>
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <span class="badge bg-light text-dark">${tool.category}</span>
+                    <button class="vote-btn" onclick="handleVote(this)">
+                        <i class="fas fa-arrow-up"></i> 
+                        <span class="vote-count">${tool.votes}</span>
+                    </button>
+                </div>
+            </div>
+        `;
+        toolsGrid.appendChild(card);
+    });
+
+    // Voting System
+    function handleVote(button) {
+        const voteCount = button.querySelector('.vote-count');
+        let count = parseInt(voteCount.textContent);
+        voteCount.textContent = count + 1;
+        
+        // Add visual feedback
+        button.classList.add('voted');
+        setTimeout(() => button.classList.remove('voted'), 200);
+    }
+
+    // Search Functionality
+    document.querySelectorAll('input[type="search"]').forEach(input => {
+        input.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            document.querySelectorAll('.tool-card').forEach(card => {
+                const toolName = card.querySelector('h4').textContent.toLowerCase();
+                card.style.display = toolName.includes(query) ? 'block' : 'none';
+            });
+        });
+    });
+
+
+
+  // In handleVote function:
+localStorage.setItem(`votes-${tool.name}`, count + 1);
+
+// On page load:
+tools.forEach(tool => {
+    tool.votes = localStorage.getItem(`votes-${tool.name}`) || tool.votes;
+});
+</script>
+
+</body>
+</html>
